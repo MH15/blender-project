@@ -1,0 +1,11 @@
+{
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": false,
+    "python.autoComplete.extraPaths": [
+        "/Users/matthewhall/github/Korchy/blender_autocomplete/2.80"
+    ],
+    "python.linting.pylintArgs": [
+        "--init-hook",
+        "import sys; sys.path.append('/Users/matthewhall/github/Korchy/blender_autocomplete/2.80')"
+    ]
+}
