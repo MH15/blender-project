@@ -9,6 +9,19 @@ class PW_NewProjectOperator(Operator):
     bl_label = "New Project"
     bl_options = {'REGISTER', 'UNDO'}
 
+    # The name of the new project
+    name = bpy.props.StringProperty(
+        name="Project Name",
+        description="The name of the project folder to create"
+        # subtype='DIR_PATH' is not needed to specify the selection mode.
+        # But this will be anyway a directory path.
+    )
+
+    # The directory in which to create the new project
+    # directory = bpy.props.StringProperty(
+
+    # )
+
     # this is needed to check if the operator can be executed/invoked
     # in the current context, useful for some but not for this example
     @classmethod
@@ -18,8 +31,50 @@ class PW_NewProjectOperator(Operator):
 
     def execute(self, context):
         print("New Project Pressed")
+        # TODO: open popup
+        bpy.ops.project_window.new_project_popup("INVOKE_DEFAULT")
 
         return {'FINISHED'}
+
+    # def invoke(self, context, event):
+    #     pass
+
+
+class PW_NewProjectPopupOperator(Operator):
+    bl_idname = "project_window.new_project_popup"
+    bl_label = "New Project"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    # The name of the new project
+    name = bpy.props.StringProperty(
+        name="Project Name",
+        description="The name of the project folder to create"
+        # subtype='DIR_PATH' is not needed to specify the selection mode.
+        # But this will be anyway a directory path.
+    )
+
+    path = bpy.props.StringProperty(
+        name="Location:",
+        description="Choose a directory:",
+        default="",
+        maxlen=1024,
+        subtype='DIR_PATH')
+
+    # this is needed to check if the operator can be executed/invoked
+    # in the current context, useful for some but not for this example
+    @classmethod
+    def poll(cls, context):
+        # check the context here
+        return context.object is not None
+
+    def execute(self, context):
+        print("Popup Completed", self.name, self.path)
+        # TODO: open popup
+
+        return {'FINISHED'}
+
+    def invoke(self, context, event):
+        return context.window_manager.invoke_props_dialog(self)
 
 
 class PW_OpenProjectOperator(Operator):

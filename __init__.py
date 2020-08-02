@@ -24,18 +24,24 @@ classes = (
     PW_PT_CurrentProjectPanel,
     PW_PT_PrimaryProjectLocationPanel,
     PW_NewProjectOperator,
-    PW_OpenProjectOperator
+    PW_OpenProjectOperator,
+    PW_NewProjectPopupOperator,
+    PropertyAsGroup
 )
 
 
 def register():
     """ Register all classes """
     print("LOADING")
+
     for c in classes:
         try:
             bpy.utils.register_class(c)
         except RuntimeError:
             print(RuntimeError)
+
+    bpy.types.Scene.project_window = bpy.props.PointerProperty(
+        type=PropertyAsGroup)
 
 
 def unregister():

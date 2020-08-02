@@ -1,4 +1,5 @@
 from bpy.types import Panel
+import bpy
 
 
 class PW_PT_Panel(Panel):
@@ -48,6 +49,15 @@ class PW_PT_PrimaryProjectLocationPanel(Panel):
         layout.prop(rd, "filepath", text="")
 
 
+class PropertyAsGroup(bpy.types.PropertyGroup):
+    root_path = bpy.props.StringProperty(
+        name="Root Path",
+        default="default_path",
+        description="Define the root path of the project",
+        subtype='DIR_PATH'
+    )
+
+
 class PW_PT_CurrentProjectPanel(Panel):
     bl_parent_id = "PW_PT_Panel"
     bl_idname = "PW_PT_CurrentProjectPanel"
@@ -58,8 +68,10 @@ class PW_PT_CurrentProjectPanel(Panel):
     def draw(self, context):
         layout = self.layout
         rd = context.scene.render
-        layout.label(text="Current")
-        layout.prop(rd, "filepath", text="")
+
+        # TODO: show if a project is selected and if so, which project
+        # layout.label(text="Current")
+        # layout.prop(rd, "filepath", text="")
         scene = context.scene
 
         # Carver Target
@@ -67,6 +79,8 @@ class PW_PT_CurrentProjectPanel(Panel):
 
         # New row
         row = layout.row()
+
+        row.prop(scene.project_window, 'root_path')
 
         # Bool diff button
         row = layout.row()
