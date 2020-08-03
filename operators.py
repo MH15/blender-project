@@ -1,7 +1,7 @@
 import bpy
 from bpy.types import Operator
 
-from . core import Project
+from . core import Project, set_preferences
 from . state import STATE
 import os
 
@@ -107,8 +107,8 @@ class PW_OpenProjectOperator(Operator):
         project = Project(self.directory)
         missing = project.validate()
         if len(missing) == 0:
-            # TODO: set some sort of state so different file dialogs open to the
-            # places specified by the project
+            # set the file dialog locations
+            set_preferences(self.directory)
             self.report(
                 {'INFO'}, "Project opened successfully: " + self.directory)
         else:

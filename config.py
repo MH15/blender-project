@@ -5,5 +5,6 @@ PATHS = {
     "TEXTURES": "textures",
     "REFERENCES": "reference",
     "SCENES": "scenes",
-    "CACHE": "cache"
+    "CACHE": "cache",
+    "SOUNDS": "sounds"
 }

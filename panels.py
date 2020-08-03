@@ -35,18 +35,18 @@ class PW_PT_PrimaryProjectLocationPanel(Panel):
     def draw(self, context):
         layout = self.layout
         rd = context.scene.render
-        layout.label(text="Scenes")
-        layout.prop(rd, "filepath", text="")
-        layout.label(text="Textures")
-        layout.prop(rd, "filepath", text="")
-        layout.label(text="Renders")
-        layout.prop(rd, "filepath", text="")
-        layout.label(text="Reference")
-        layout.prop(rd, "filepath", text="")
-        layout.label(text="Cache")
-        layout.prop(rd, "filepath", text="")
-        layout.label(text="Sound")
-        layout.prop(rd, "filepath", text="")
+        # layout.label(text="Scenes")
+        # layout.prop(rd, "filepath", text="")
+        # layout.label(text="Textures")
+        # layout.prop(rd, "filepath", text="")
+        # layout.label(text="Renders")
+        # layout.prop(rd, "filepath", text="")
+        # layout.label(text="Reference")
+        # layout.prop(rd, "filepath", text="")
+        # layout.label(text="Cache")
+        # layout.prop(rd, "filepath", text="")
+        # layout.label(text="Sound")
+        # layout.prop(rd, "filepath", text="")
 
 
 class PropertyAsGroup(bpy.types.PropertyGroup):
