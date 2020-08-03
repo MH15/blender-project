@@ -2,6 +2,8 @@ import bpy
 from bpy.types import Operator
 
 from . core import Project
+from . state import STATE
+import os
 
 
 class PW_NewProjectOperator(Operator):
@@ -13,14 +15,7 @@ class PW_NewProjectOperator(Operator):
     name = bpy.props.StringProperty(
         name="Project Name",
         description="The name of the project folder to create"
-        # subtype='DIR_PATH' is not needed to specify the selection mode.
-        # But this will be anyway a directory path.
     )
-
-    # The directory in which to create the new project
-    # directory = bpy.props.StringProperty(
-
-    # )
 
     # this is needed to check if the operator can be executed/invoked
     # in the current context, useful for some but not for this example
@@ -31,7 +26,6 @@ class PW_NewProjectOperator(Operator):
 
     def execute(self, context):
         print("New Project Pressed")
-        # TODO: open popup
         bpy.ops.project_window.new_project_popup("INVOKE_DEFAULT")
 
         return {'FINISHED'}
@@ -49,16 +43,7 @@ class PW_NewProjectPopupOperator(Operator):
     name = bpy.props.StringProperty(
         name="Project Name",
         description="The name of the project folder to create"
-        # subtype='DIR_PATH' is not needed to specify the selection mode.
-        # But this will be anyway a directory path.
     )
-
-    path = bpy.props.StringProperty(
-        name="Location:",
-        description="Choose a directory:",
-        default="",
-        maxlen=1024,
-        subtype='DIR_PATH')
 
     # this is needed to check if the operator can be executed/invoked
     # in the current context, useful for some but not for this example
@@ -68,12 +53,25 @@ class PW_NewProjectPopupOperator(Operator):
         return context.object is not None
 
     def execute(self, context):
-        print("Popup Completed", self.name, self.path)
-        # TODO: open popup
+        # get the root path and set the file picker to start there
+        root_path = bpy.context.scene.project_window.root_path
+        project_name = self.name
+
+        project_path = os.path.join(root_path, project_name)
+        if not os.path.exists(project_path):
+            os.makedirs(project_path)
+
+        new_project = Project(project_path)
+        new_project.create()
+
+        self.report(
+            {'INFO'}, f"Project `{project_name} created in {root_path}`")
+        STATE["project"] = new_project
 
         return {'FINISHED'}
 
     def invoke(self, context, event):
+        # self.path.default = root_path
         return context.window_manager.invoke_props_dialog(self)
 
 
@@ -105,16 +103,17 @@ class PW_OpenProjectOperator(Operator):
         # in curly braces {} which is the first argument, second is the actual
         # displayed text
 
+        joiner = ","
         project = Project(self.directory)
-
-        if project.validate():
+        missing = project.validate()
+        if len(missing) == 0:
             # TODO: set some sort of state so different file dialogs open to the
             # places specified by the project
             self.report(
                 {'INFO'}, "Project opened successfully: " + self.directory)
         else:
             self.report(
-                {'WARNING'}, "Project appears to be missing some folders: " + self.directory)
+                {'WARNING'}, "Project appears to be missing some folders: " + joiner.join(missing))
 
         # return value tells blender wether the operation finished sueccessfully
         # needs to be in curly braces also {}

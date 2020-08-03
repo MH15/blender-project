@@ -74,12 +74,8 @@ class PW_PT_CurrentProjectPanel(Panel):
         # layout.prop(rd, "filepath", text="")
         scene = context.scene
 
-        # Carver Target
-        row = layout.row()
-
         # New row
         row = layout.row()
-
         row.prop(scene.project_window, 'root_path')
 
         # Bool diff button

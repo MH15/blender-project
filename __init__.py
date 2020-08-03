@@ -26,7 +26,7 @@ classes = (
     PW_NewProjectOperator,
     PW_OpenProjectOperator,
     PW_NewProjectPopupOperator,
-    PropertyAsGroup
+    PropertyAsGroup,
 )
 
 

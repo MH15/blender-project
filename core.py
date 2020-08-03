@@ -26,17 +26,26 @@ class Project:
     def validate(self):
         """ Check that each directory in self.paths exists in the Project """
 
-        all_exist = True
+        missing = []
 
-        for folder_dir in self.paths:
-            full_dir = os.path.join(self.project_path, folder_dir)
+        for folder_dir_key in self.paths:
+            folder_dir_val = self.paths[folder_dir_key]
+            full_dir = os.path.join(self.project_path, folder_dir_val)
             if not os.path.exists(full_dir):
-                all_exist = False
+                missing.append(folder_dir)
                 break
 
-        return all_exist
-        pass
+        return missing
 
     def create(self):
         """ Create a folder for each of the directories in self.paths """
-        pass
+        failures = []
+
+        for folder_dir_key in self.paths:
+            folder_dir_val = self.paths[folder_dir_key]
+            full_dir = os.path.join(self.project_path, folder_dir_val)
+            if not os.path.exists(full_dir):
+                os.makedirs(full_dir)
+            else:
+                failures.append(folder_dir)
+        return failures
